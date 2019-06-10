@@ -3,6 +3,8 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const px2rem = require('postcss-px2rem')
+const postcss = require('postcss')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -64,6 +66,15 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+      },
+      {
+        test:'/\.less$/',
+        loader:["vue-loader", "css-loader", "less-loader","postcss-loader"]
+      },
+      {
+        test:'/\.less$/',
+        loader:'vue-loader',
+        options:vueLoaderConfig
       }
     ]
   },

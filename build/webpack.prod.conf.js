@@ -115,7 +115,12 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new webpack.LoaderOptionsPlugin({
+      vue:{
+         postcss: [require('postcss-px2rem')({ remUnit: 100, propWhiteList: [] })]
+      }
+    })
   ]
 })
 
