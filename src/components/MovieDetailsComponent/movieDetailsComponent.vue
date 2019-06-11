@@ -41,9 +41,29 @@
     <div class="hotCommont">
       <h3>热门评论：</h3>
       <ul>
-
+        <li class="commontWrap" v-for="(item,index) in commontArr" :key="index">
+          <div class="header">
+            <div class="avatar">
+              <img :src="item.author.avatar" alt="">
+            </div>
+            <div class="name">{{item.author.name}}</div>
+          </div>
+          <div class="content">
+            <p>{{item.content}}</p>
+            <div class="time">
+              <p>{{item.created_at}}</p>
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
+    <div class="button">
+      <div class="buttonWrap">
+        <mt-button size="normal" type="danger">加入购物车</mt-button>
+        <mt-button size="normal" type="danger">立即购买</mt-button>
+      </div>
+    </div>
+
   </div>
 </template>
 <script>
@@ -54,7 +74,8 @@
         title: '',
         detailList: {},
         moveDetail: {},
-        relativeArr: []
+        relativeArr: [],
+        commontArr: []
       }
     },
     mounted() {
@@ -67,18 +88,25 @@
     methods: {
       getMovieList() {
         let temp = [];
+        let tempCom = [];
         this.axios.get('/api/movie/subject/' + this.id)
           .then(res => {
             this.moveDetail = res.data;
             this.title = res.data.title + " (" + res.data.year + ")";
             this.detailList.url = "https://images.weserv.nl/?url=" + res.data.images.medium.substring(8);
             temp = res.data.photos.slice(0, 5);
+            tempCom = res.data.popular_comments;
             for (let i = 0; i < temp.length; i++) {
               temp[i].image = "https://images.weserv.nl/?url=" + temp[i].image.substring(8);
             }
+            for (let j = 0; j < tempCom.length; j++) {
+              tempCom[j].author.avatar = "https://images.weserv.nl/?url=" + res.data.popular_comments[j].author.avatar.substring(8)
+            }
+            this.commontArr = tempCom;
             this.relativeArr = temp;
-            console.log(this.relativeArr);
-            console.log(this.moveDetail);
+            // console.log(this.relativeArr);
+            // console.log(this.moveDetail);
+            // console.log(this.commontArr);
           })
       },
     },
@@ -95,11 +123,12 @@
 </script>
 <style lang="less" scoped>
   .app {
-    h3{
-      color:#007722;
+    h3 {
+      color: #007722;
       font-size: 16px;
       font-weight: 400;
     }
+
     margin-top: 70px;
     padding: 0px 5px;
     overflow: scroll;
@@ -167,14 +196,93 @@
 
           img {
             width: 96%;
-            height: 110px;
+            height: 105px;
           }
         }
       }
     }
-    .hotCommont{
 
+    .hotCommont {
+      ul {
+        margin: 0px;
+        padding: 0px;
+
+        li {
+          list-style: none;
+          position: relative;
+
+          .header {
+            position: relative;
+
+            .avatar {
+              width: 40px;
+              height: 40px;
+              box-sizing: border-box;
+              border-radius: 50%;
+              border: 1px solid #ccc;
+              overflow: hidden;
+
+              img {
+                width: 100%;
+                height: 100%;
+              }
+            }
+
+            .name {
+              position: absolute;
+              font-size: 12px;
+              top: 5px;
+              left: 50px;
+            }
+          }
+
+          .content {
+            position: relative;
+            top: -15px;
+            left: 50px;
+
+            p {
+              word-wrap: break-word;
+              word-break: break-all;
+              width: 87%;
+              margin: 0px;
+              padding: 0px;
+              font-size: 14px;
+            }
+
+            .time {
+              position: relative;
+              bottom: -5px;
+              left: 0px;
+
+              p {
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
     }
+
+    .button {
+      height: 50px;
+      position: relative;
+      .buttonWrap {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%,-50%);
+        -moz-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+        -o-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+        .mint-button--normal {
+          font-size: 12px;
+        }
+
+      }
+    }
+
   }
 </style>
 

@@ -135,7 +135,6 @@
 <style lang='less' scoped>
   .page-loadmore-wrapper {
     overflow: scroll;
-
     .mint-loadmore-content {
       .item {
         margin-top: 10px;
