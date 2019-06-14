@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import store from './store/store.js'
 Vue.use(Mint)
 import axios from 'axios'
 axios.defaults.headers['Content-Type'] = 'Access-Control-Allow-Origin:*'
@@ -15,5 +16,6 @@ Vue.prototype.axios = axios
 new Vue({
   el: '#app',
   render: c => c(App),
-  router
+  router,
+  store
 })

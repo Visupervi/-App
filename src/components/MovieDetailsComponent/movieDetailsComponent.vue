@@ -59,8 +59,8 @@
     </div>
     <div class="button">
       <div class="buttonWrap">
-        <mt-button size="normal" type="danger">加入购物车</mt-button>
-        <mt-button size="normal" type="danger">立即购买</mt-button>
+        <mt-button size="normal" type="danger" @click="addToShopCart">加入购物车</mt-button>
+        <mt-button size="normal" type="danger" @click="immedBuy">立即购买</mt-button>
       </div>
     </div>
 
@@ -75,7 +75,9 @@
         detailList: {},
         moveDetail: {},
         relativeArr: [],
-        commontArr: []
+        commontArr: [],
+        isShow:false,
+        goodsCount:1
       }
     },
     mounted() {
@@ -104,10 +106,19 @@
             }
             this.commontArr = tempCom;
             this.relativeArr = temp;
-            // console.log(this.relativeArr);
-            // console.log(this.moveDetail);
-            // console.log(this.commontArr);
           })
+      },
+      addToShopCart(){
+        this.isShow = !this.isShow;
+        this.$store.commit("addToShopCar",{id:this.id,count:this.goodsCount,data:this.moveDetail});
+      },
+      //立即购买，添加并跳转到购物车
+      immedBuy(){
+        this.isShow = !this.isShow;
+        this.$store.commit("addToShopCar",{id:this.id,count:this.goodsCount,data:this.moveDetail});
+        this.$router.push({
+          path:'/shopCar'
+        });
       },
     },
     filters: {

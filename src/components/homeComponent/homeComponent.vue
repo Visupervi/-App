@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <mt-search v-model="value"></mt-search>
     <mt-navbar class="page-part">
       <mt-tab-item id="1">Top 250</mt-tab-item>
       <mt-tab-item id="2">正在热映</mt-tab-item>
@@ -36,6 +37,7 @@
   export default {
     data() {
       return {
+        value:'',
         list: [],
         temp: [],
         movieList: [],
@@ -54,7 +56,6 @@
     },
     methods: {
       handleBottomChange(status) {
-        console.log(status);
         this.bottomStatus = status;
       },
 
@@ -68,7 +69,6 @@
               this.temp[i].images.medium = 'https://images.weserv.nl/?url=' + _u;
             }
             this.list = this.temp;
-            console.log(this.list)
           })
           .catch(err => {
             console.log(err)
@@ -76,7 +76,6 @@
       },
       // 上拉加载更多
       loadBottom() {
-        console.log("触发了");
         this.$refs.loadmore.onBottomLoaded();
         this.getMovieList();
       },
@@ -84,7 +83,6 @@
       getMovieList() {
         this.axios.get('/api/movie/top250?start=' + this.page + "&count=" + this.count)
           .then(res => {
-            console.log(res.data);
             this.totalPage = Math.ceil(res.data.total / res.data.count);
             if (this.page > this.totalPage) {
               this.allLoaded = true;
@@ -127,8 +125,6 @@
     },
     mounted() {
       this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-      console.log(this.$refs.wrapper);
-      console.log(this.wrapperHeight);
     }
   }
 </script>
