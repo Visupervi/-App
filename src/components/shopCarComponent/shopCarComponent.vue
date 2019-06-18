@@ -1,82 +1,298 @@
 <template>
   <div class="app">
-    <p>我是购物车啊</p>
-
-  <ul>
-    <li>
-      <div class="carImg">
-
-      </div>
-      <div class="carText">
-        <div class="carTexTitle">sssssssssssssshjhjhjhjhjhjhjhjhjhjhjhj</div>
-        <div class="cartDes">sdsdsdsdsdsdsdsdsdsds</div>
-        <div class="goodsNum">
-          <h5>￥：<button class="add">+</button><input type="text" v-model="value"><button class="del">-</button></h5>
+    <p>购物车</p>
+    <ul>
+      <li v-for="(item,index) in goodsList" :key="index">
+        <label class="mint-checklist">
+        <span class="mint-checkbox" id="mint-checkbox">
+          <input type="checkbox" class="mint-checkbox-input" v-model="checkboxModel">
+          <span class="mint-checkbox-core"></span>
+        </span>
+          <span class="mint-checkbox-label">
+        </span>
+        </label>
+        <div class="carImg">
+          <img :src="'https://images.weserv.nl/?url='+item.data.images.medium">
         </div>
-      </div>
-    </li>
-  </ul>
+        <div class="carText">
+          <div class="carTexTitle">{{item.data.title}}</div>
+          <div class="cartDes">{{item.data.summary.substring(0,20)+"..."}}</div>
+          <div class="goodsNum">
+            <h5>￥：{{2333*item.count}}
+              <div class="btnWrap">
+                <button class="add" @click="addCount(item)">+</button>
+                <input type="text" v-model="item.count" @change="countChange">
+                <button class="del" @click="delCount(item)">-</button>
+              </div>
+
+            </h5>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="total">
+      <label class="mint-checklist">
+        <span class="mint-checkbox" id="">
+          <input type="checkbox" class="mint-checkbox-input" value="全选" @click="checkedAll" v-model="checked">
+          <span class="mint-checkbox-core"></span>
+        </span>
+        <span class="mint-checkbox-label">
+          全选
+        </span>
+        <span class="comTotal">
+          合计:￥
+        </span>
+      </label>
+      <button>结算</button>
+    </div>
   </div>
 </template>
-<script >
+<script>
   export default {
-    data(){
-      return{
-        value:'123'
+    props: [],
+    data() {
+      return {
+        goodsList: [],
+        count: "",
+        checkboxModel: [],
+        checked:false
       }
     },
-    methods:{},
+    methods: {
+      getGoodsList() {
+        let dataArr = this.$store.state.car.map(item => {
+          return item
+        })
+        this.goodsList = dataArr;
+      },
+      //点击加号，同不vuex
+      addCount(item) {
+        item.count++
+        this.$store.state.car.some((ele, i, arr) => {
+          if (item.id === ele.id) {
+            ele.count = item.count;
+          }
+        })
+      },
+      //点击-号，当为1就删除
+      delCount(item) {
+        if (item.count > 1) {
+          item.count--;
+        } else {
+          this.$store.commit("delGoodsById", item.id);
+          this.goodsList.some((ele, i) => {
+            if (item.id === ele.id) {
+              this.goodsList.splice(i, i);
+              console.log("触发函数");
+            }
+          })
+        }
+      },
+      countChange() {
+      },
+      checkedAll() {
+        console.log(this.checked);
+        if (this.checked) {
+          console.log("123")
+          this.checkboxModel = this.goodsList;
+        } else {
+          this.checkboxModel = [];
+          console.log("456");
+        }
+        console.log(this.checkboxModel);
+      }
+    },
     created() {
+      this.getGoodsList();
+    },
+    watch: {
+      'checkboxModel': {
+        handler() {
+          if (this.checkboxModel.length === this.goodsList.length) {
+            this.checked = true;
+          } else {
+            this.checked = false;
+          }
+        },
+        deep: true
+      }
     }
   }
 </script>
 
 <style lang="less" scoped>
-.app{
-  padding: 0 10px;
-  margin-top: 60px;
-  ul{
-    list-style: none;
-    margin: 0px;
-    padding: 0px;
-    li{
-      display: flex;
-      .carImg{
-        flex: 1;
-        /*width: 50px;*/
-        height: 70px;
-        border: 1px solid #ccc;
-      }
-      .carText{
-        flex: 4;
-        padding-left: 10px;
-        box-sizing: border-box;
-        h5{
-          padding: 0;
-          margin: 0;
+  .app {
+    margin-top: 40px;
+    height: 100%;
+
+    ul {
+      list-style: none;
+      margin: 0px;
+      padding: 0px;
+      padding: 0 10px;
+
+      li {
+        display: flex;
+        margin-top: 10px;
+        background-color: #eee;
+        border-radius: 8px;
+
+        .carImg {
+          flex: 1;
+          /*width: 50px;*/
+          height: 78.9px;
+          border: 1px solid #ccc;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+
+        }
+
+        .mint-checklist {
+          .mint-checkbox {
+            .mint-checkbox-core {
+              width: 15px;
+              height: 15px;
+              top: 50%;
+              left: 5px;
+              -webkit-transform: translate(0, 50%);
+              -moz-transform: translate(0, 50%);
+              -ms-transform: translate(0, -50%);
+              -o-transform: translate(0, -50%);
+              transform: translate(0, -50%);
+            }
+
+            .mint-checkbox-core:after {
+              top: 1px;
+              left: 4px;
+            }
+          }
+
+        }
+
+        .carText {
+          flex: 4;
+          padding-left: 10px;
+          box-sizing: border-box;
           font-size: 14px;
-          font-weight: 400;
-          input{
-            width: 30px;
-            text-align: center;
-          }
-          button{
-            outline-style: none;
-            border: 1px solid #ccc;
-            width: 30px;
-            padding: 2px;
-            background-color: #fff;
-          }
-          .add{
-            border-right: 0;
-          }
-          .del{
-            border-left: 0;
+
+          h5 {
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
+            font-weight: 400;
+
+            .btnWrap {
+              float: right;
+              margin-bottom: 5px;
+
+              input {
+                width: 30px;
+                text-align: center;
+                outline-style: none;
+              }
+
+              button {
+                outline-style: none;
+                border: 1px solid #ccc;
+                width: 30px;
+                padding: 2px;
+                background-color: #fff;
+              }
+
+              .add {
+                border-right: 0;
+              }
+
+              .del {
+                border-left: 0;
+              }
+            }
           }
         }
       }
     }
-  }
 
-}
+    .total {
+      position: fixed;
+      z-index: 9999;
+      background-color: #fff;
+      bottom: 60px;
+      border-top: 1px solid #efefef;
+      width: 100%;
+      height: 50px;
+      padding: 0 10px;
+      box-sizing: border-box;
+
+      .mint-checklist {
+        .mint-checkbox {
+          font-size: 12px;
+
+          .mint-checkbox-core {
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            -webkit-transform: translate(0, 50%);
+            -moz-transform: translate(0, 50%);
+            -ms-transform: translate(0, -50%);
+            -o-transform: translate(0, -50%);
+            transform: translate(0, -50%);
+          }
+
+          .mint-checkbox-core:after {
+            top: 1px;
+            left: 4px;
+          }
+        }
+
+        .mint-checkbox-label {
+          font-size: 12px;
+          top: 50%;
+          position: absolute;
+          left: 30px;
+          -webkit-transform: translate(0, 50%);
+          -moz-transform: translate(0, 50%);
+          -ms-transform: translate(0, -50%);
+          -o-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+        }
+
+        .comTotal {
+          position: absolute;
+          font-size: 12px;
+          top: 50%;
+          -webkit-transform: translate(0, 50%);
+          -moz-transform: translate(0, 50%);
+          -ms-transform: translate(0, -50%);
+          -o-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+          right: 90px;
+        }
+      }
+
+      button {
+        background-image: linear-gradient(90deg, #FF9000 0%, #FF5000 98%);
+        outline-style: none;
+        border: none;
+        font-size: 15px;
+        padding: 5px 20px;
+        border-radius: 15px;
+        color: #fff;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        -webkit-transform: translate(0, 50%);
+        -moz-transform: translate(0, 50%);
+        -ms-transform: translate(0, -50%);
+        -o-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+
+      }
+    }
+
+  }
 </style>

@@ -36,6 +36,8 @@
     },
     created() {
     },
+    methods:{
+    },
     watch: {
       'selected': {
         handler() {
@@ -52,6 +54,11 @@
             })
           }
         }
+      },
+      '$route'(to){
+        if(to.path.indexOf("movieDetails") == -1){
+          this.selected = "";
+        }
       }
     }
   }
@@ -61,9 +68,10 @@
   html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
   }
-
   #app {
+    height: inherit;
     .title {
       text-align: center;
       height: 30px;

@@ -26,7 +26,7 @@
           </div>
         </div>
         <div slot="bottom" class="mint-loadmore-bottom">
-          <span v-show="bottomStatus !== 'loading'" :class="{ 'is-rotate': bottomStatus === 'drop' }">↑</span>
+          <span v-show="bottomStatus !== 'loading'" :class="{ 'is-rotate': bottomStatus === 'drop' }"></span>
           <span v-show="bottomStatus === 'loading'">Loading...</span>
         </div>
       </mt-loadmore>

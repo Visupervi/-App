@@ -25,13 +25,13 @@
       </div>
     </div>
     <div class="summary">
-      <h3>{{moveDetail.title+"简介："}}</h3>
+      <h3 v-if="moveDetail.title !=undefined">{{moveDetail.title+"简介："}}</h3>
       <div class="summaryContent">
         {{moveDetail.summary}}
       </div>
     </div>
     <div class="relativPhoto">
-      <h3>{{moveDetail.title +"的图片："}}</h3>
+      <h3 v-if="moveDetail.title != undefined">{{moveDetail.title +"的图片："}}</h3>
       <ul>
         <li v-for="(item,index) in relativeArr" :key="index">
           <img :src="item.image" alt="">
@@ -39,7 +39,7 @@
       </ul>
     </div>
     <div class="hotCommont">
-      <h3>热门评论：</h3>
+      <h3 v-if="commontArr != undefined">热门评论：</h3>
       <ul>
         <li class="commontWrap" v-for="(item,index) in commontArr" :key="index">
           <div class="header">
@@ -63,7 +63,6 @@
         <mt-button size="normal" type="danger" @click="immedBuy">立即购买</mt-button>
       </div>
     </div>
-
   </div>
 </template>
 <script>
@@ -119,6 +118,12 @@
         this.$router.push({
           path:'/shopCar'
         });
+      },
+      clearRouter(){
+        if(this.$route.query.movieId){
+          console.log("触发函数");
+          this.selected = "";
+        }
       },
     },
     filters: {
