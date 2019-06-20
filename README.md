@@ -17,6 +17,8 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+#### 一.
+######项目使用vue全家桶，实现一个简单的豆瓣电影，其中包括的东西比较多，可以学习使用
 ##### 1.mintui要做修改
 ###### 因为在页面上处理样式不生效，所以直接修改了style.css文件中的几个地方,首先处理一下checkLIst
 
