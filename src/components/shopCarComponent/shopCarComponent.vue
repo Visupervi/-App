@@ -5,17 +5,17 @@
       <li v-for="(item,index) in goodsList" :key="index">
         <label class="mint-checklist">
         <span class="mint-checkbox" id="mint-checkbox">
-          <input type="checkbox" class="mint-checkbox-input" v-model="checkboxModel">
+          <input type="checkbox" class="mint-checkbox-input" v-model="checkboxModel" :value="item">
           <span class="mint-checkbox-core"></span>
         </span>
           <span class="mint-checkbox-label">
         </span>
         </label>
-        <div class="carImg">
+        <div class="carImg" v-if="item.data.images !=undefined">
           <img :src="'https://images.weserv.nl/?url='+item.data.images.medium">
         </div>
         <div class="carText">
-          <div class="carTexTitle">{{item.data.title}}</div>
+          <div class="carTexTitle" v-if="item.data.title !=undefined">{{item.data.title}}</div>
           <div class="cartDes">{{item.data.summary.substring(0,20)+"..."}}</div>
           <div class="goodsNum">
             <h5>￥：{{2333*item.count}}
@@ -24,7 +24,6 @@
                 <input type="text" v-model="item.count" @change="countChange">
                 <button class="del" @click="delCount(item)">-</button>
               </div>
-
             </h5>
           </div>
         </div>
@@ -33,17 +32,17 @@
     <div class="total">
       <label class="mint-checklist">
         <span class="mint-checkbox" id="">
-          <input type="checkbox" class="mint-checkbox-input" value="全选" @click="checkedAll" v-model="checked">
+          <input type="checkbox" class="mint-checkbox-input" value="" @click="checkedAll" v-model="checked">
           <span class="mint-checkbox-core"></span>
         </span>
         <span class="mint-checkbox-label">
           全选
         </span>
         <span class="comTotal">
-          合计:￥
+          合计:￥{{allCount}}
         </span>
       </label>
-      <button>结算</button>
+      <button @click="pay">结算</button>
     </div>
   </div>
 </template>
@@ -55,35 +54,37 @@
         goodsList: [],
         count: "",
         checkboxModel: [],
-        checked:false
+        checked: false,
+        allCount: 0
       }
     },
     methods: {
       getGoodsList() {
         let dataArr = this.$store.state.car.map(item => {
           return item
-        })
+        });
         this.goodsList = dataArr;
       },
       //点击加号，同不vuex
       addCount(item) {
-        item.count++
+        item.count++;
         this.$store.state.car.some((ele, i, arr) => {
           if (item.id === ele.id) {
             ele.count = item.count;
           }
-        })
+        });
+        this.$store.commit("addToShopCar", item);
       },
       //点击-号，当为1就删除
       delCount(item) {
         if (item.count > 1) {
           item.count--;
+          this.$store.commit("addToShopCar", item);
         } else {
           this.$store.commit("delGoodsById", item.id);
           this.goodsList.some((ele, i) => {
             if (item.id === ele.id) {
-              this.goodsList.splice(i, i);
-              console.log("触发函数");
+              this.goodsList.splice(i, 1);
             }
           })
         }
@@ -91,15 +92,17 @@
       countChange() {
       },
       checkedAll() {
-        console.log(this.checked);
         if (this.checked) {
-          console.log("123")
-          this.checkboxModel = this.goodsList;
+          this.checkboxModel = [];
         } else {
           this.checkboxModel = [];
-          console.log("456");
+          this.goodsList.forEach(item => {
+            this.checkboxModel.push(item);
+          })
         }
-        console.log(this.checkboxModel);
+      },
+      pay() {
+        alert("暂时没办法结算");
       }
     },
     created() {
@@ -108,18 +111,21 @@
     watch: {
       'checkboxModel': {
         handler() {
-          if (this.checkboxModel.length === this.goodsList.length) {
-            this.checked = true;
-          } else {
+          this.allCount = 0;
+          if (this.checkboxModel.length !== this.goodsList.length) {
             this.checked = false;
+          } else {
+            this.checked = true;
           }
+          this.checkboxModel.forEach((item, index) => {
+            this.allCount += item.count * 2333;
+          })
         },
         deep: true
-      }
+      },
     }
   }
 </script>
-
 <style lang="less" scoped>
   .app {
     margin-top: 40px;
@@ -147,7 +153,6 @@
             width: 100%;
             height: 100%;
           }
-
         }
 
         .mint-checklist {
@@ -169,7 +174,6 @@
               left: 4px;
             }
           }
-
         }
 
         .carText {
@@ -183,15 +187,21 @@
             margin: 0;
             font-size: 14px;
             font-weight: 400;
+            position: relative;
 
             .btnWrap {
-              float: right;
               margin-bottom: 5px;
+              position: absolute;
+              bottom: -7px;
+              right: 10px;
 
               input {
                 width: 30px;
                 text-align: center;
                 outline-style: none;
+                vertical-align: middle;
+                border: 1px solid #ccc;
+                padding: 2px;
               }
 
               button {
@@ -200,14 +210,18 @@
                 width: 30px;
                 padding: 2px;
                 background-color: #fff;
+                position: relative;
+                vertical-align: middle;
               }
 
               .add {
                 border-right: 0;
+                left: 4px;
               }
 
               .del {
                 border-left: 0;
+                right: 4px;
               }
             }
           }
@@ -290,9 +304,7 @@
         -ms-transform: translate(0, -50%);
         -o-transform: translate(0, -50%);
         transform: translate(0, -50%);
-
       }
     }
-
   }
 </style>

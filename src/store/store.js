@@ -13,7 +13,7 @@ const store = new Vuex.Store({
       let flag = false;
       state.car.some(item =>{
         if(item.id === goods.id){
-          item.count += goods.count;
+          item.count = goods.count;
           flag = true;
           return flag;
         }
