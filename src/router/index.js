@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import homeComponent from '../components/homeComponent/homeComponent.vue'
 import movieDetails from '../components/MovieDetailsComponent/movieDetailsComponent.vue'
 import shopCar from '../components/shopCarComponent/shopCarComponent'
+import commingSoon from '../components/comingSoonComponent/commingSoonComponent'
+import hotNow from '../components/hotNowComponent/hotNowComponent'
 Vue.use(Router)
 
 export default new Router({
@@ -16,6 +18,16 @@ export default new Router({
       path: '/homeComponent',
       name: 'homeComponent',
       component: homeComponent
+    },
+    {
+      path:'/commingSoon',
+      name:'commingSoon',
+      component:commingSoon
+    },
+    {
+      path:"/hotNow",
+      name:'hotNow',
+      component:hotNow
     },
     {
       path:'/movieDetails',

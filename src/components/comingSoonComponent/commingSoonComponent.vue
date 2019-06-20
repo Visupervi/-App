@@ -11,7 +11,7 @@
         <img :src="item.images.medium">
       </mt-swipe-item>
     </mt-swipe>
-    <h3>豆瓣电影Top250</h3>
+    <h3>即将上映</h3>
     <div class="page-loadmore-wrapper" ref="wrapper">
       <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore"
                    @bottom-status-change="handleBottomChange">
@@ -48,7 +48,7 @@
         page: 1,
         count: 12,
         totalPage: '',
-        selected:'top'
+        selected:'soon'
       }
     },
     created() {
@@ -82,7 +82,7 @@
       },
       // 获取加载数据
       getMovieList() {
-        this.axios.get('/api/movie/top250?start=' + this.page + "&count=" + this.count)
+        this.axios.get('/api/movie/coming_soon?start=' + this.page + "&count=" + this.count)
           .then(res => {
             this.totalPage = Math.ceil(res.data.total / res.data.count);
             if (this.page > this.totalPage) {
@@ -179,8 +179,6 @@
       }
     }
   }
-
-
   .mint-swipe {
     height: 230px;
     .mint-swipe-item img {
