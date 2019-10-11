@@ -179,8 +179,6 @@
       }
     }
   }
-
-
   .mint-swipe {
     height: 230px;
     .mint-swipe-item img {
@@ -188,6 +186,4 @@
       height: 100%;
     }
   }
-
-
 </style>

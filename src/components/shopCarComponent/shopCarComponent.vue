@@ -65,7 +65,7 @@
         });
         this.goodsList = dataArr;
       },
-      //点击加号，同不vuex
+      //点击加号，同步vuex
       addCount(item) {
         item.count++;
         this.$store.state.car.some((ele, i, arr) => {
@@ -75,7 +75,7 @@
         });
         this.$store.commit("addToShopCar", item);
       },
-      //点击-号，当为1就删除
+      //点击-号，当为1就删除同步vuex
       delCount(item) {
         if (item.count > 1) {
           item.count--;

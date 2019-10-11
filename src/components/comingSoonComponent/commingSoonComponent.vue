@@ -102,7 +102,6 @@
               if (moveArr[i].casts) {
                 for (let j = 0; j < moveArr[i].casts.length; j++) {
                   castsTemp[j] = moveArr[i].casts[j].name;
-
                 }
               }
               moveArr[i].directors = directorsTemp;
