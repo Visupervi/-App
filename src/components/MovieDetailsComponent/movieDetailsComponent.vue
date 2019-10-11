@@ -39,7 +39,7 @@
       </ul>
     </div>
     <div class="hotCommont">
-      <h3 v-if="commontArr != undefined">热门评论：</h3>
+      <h3 v-if="commontArr !== undefined">热门评论：</h3>
       <ul>
         <li class="commontWrap" v-for="(item,index) in commontArr" :key="index">
           <div class="header">
@@ -58,7 +58,7 @@
       </ul>
     </div>
     <div class="button">
-      <div class="buttonWrap">
+      <div class="buttonWrap" v-if="moveDetail !== undefined">
         <mt-button size="normal" type="danger" @click="addToShopCart">加入购物车</mt-button>
         <mt-button size="normal" type="danger" @click="immedBuy">立即购买</mt-button>
       </div>
@@ -75,8 +75,8 @@
         moveDetail: {},
         relativeArr: [],
         commontArr: [],
-        isShow:false,
-        goodsCount:1
+        isShow: false,
+        goodsCount: 1
       }
     },
     mounted() {
@@ -107,20 +107,20 @@
             this.relativeArr = temp;
           })
       },
-      addToShopCart(){
+      addToShopCart() {
         this.isShow = !this.isShow;
-        this.$store.commit("addToShopCar",{id:this.id,count:this.goodsCount,data:this.moveDetail});
+        this.$store.commit("addToShopCar", {id: this.id, count: this.goodsCount, data: this.moveDetail});
       },
       //立即购买，添加并跳转到购物车
-      immedBuy(){
+      immedBuy() {
         this.isShow = !this.isShow;
-        this.$store.commit("addToShopCar",{id:this.id,count:this.goodsCount,data:this.moveDetail});
+        this.$store.commit("addToShopCar", {id: this.id, count: this.goodsCount, data: this.moveDetail});
         this.$router.push({
-          path:'/shopCar'
+          path: '/shopCar'
         });
       },
-      clearRouter(){
-        if(this.$route.query.movieId){
+      clearRouter() {
+        if (this.$route.query.movieId) {
           console.log("触发函数");
           this.selected = "";
         }
@@ -145,7 +145,7 @@
       font-weight: 400;
     }
 
-    margin-top: 70px;
+    margin-top: 30px;
     padding: 0px 5px;
     overflow: scroll;
     padding-bottom: 60px;
@@ -287,13 +287,18 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        -webkit-transform: translate(-50%,-50%);
-        -moz-transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-        -o-transform: translate(-50%,-50%);
-        transform: translate(-50%,-50%);
+        width: 100%;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+
         .mint-button--normal {
           font-size: 12px;
+          width: 49%;
+          padding: 0px;
+          height:35px;
         }
 
       }

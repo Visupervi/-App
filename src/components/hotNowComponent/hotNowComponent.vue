@@ -129,7 +129,7 @@
         handler(){
           if(this.selected ==="top"){
             this.$router.push({
-              path:'/homeComponent'
+              path:'/'
             })
           }
           if(this.selected === 'hot'){

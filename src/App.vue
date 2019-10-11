@@ -15,11 +15,11 @@
         <img slot="icon" src="./assets/message.png">
         消息
       </mt-tab-item>
-      <mt-tab-item id="发现">
+      <mt-tab-item id="find">
         <img slot="icon" src="./assets/location.png">
         发现
       </mt-tab-item>
-      <mt-tab-item id="我的">
+      <mt-tab-item id="mine">
         <img slot="icon" src="./assets/mine.png">
         我的
       </mt-tab-item>
@@ -36,27 +36,34 @@
     },
     created() {
     },
-    methods:{
-    },
+    methods: {},
     watch: {
       'selected': {
         handler() {
-          if (this.selected === "homeComponent") {
-            this.$router.push(
-              {
-                path: '/homeComponent'
-              })
-          }
-          if(this.selected === 'shopCar'){
-            this.$router.push(
-              {
-                path:'/shopCar'
-            })
+          switch (this.selected) {
+            case "homeComponent":
+              this.$router.push(
+                {
+                  path: '/'
+                });
+              break;
+            case "shopCar":
+              this.$router.push(
+                {
+                  path: '/shopCar'
+                });
+              break;
+            case "find":
+              this.$router.push(
+                {
+                  path: '/find'
+                });
+              break;
           }
         }
       },
-      '$route'(to){
-        if(to.path.indexOf("movieDetails") == -1){
+      '$route'(to) {
+        if (to.path.indexOf("movieDetails") == -1) {
           this.selected = "";
         }
       }
@@ -70,15 +77,17 @@
     padding: 0;
     height: 100%;
   }
+
   #app {
     height: inherit;
+
     .title {
       text-align: center;
       height: 30px;
       line-height: 30px;
       color: #fff;
       display: flex;
-      background-color: #008B00;
+      background-color: #0f8884;
       position: fixed;
       top: 0;
       font-size: 18px;

@@ -5,17 +5,13 @@ import movieDetails from '../components/MovieDetailsComponent/movieDetailsCompon
 import shopCar from '../components/shopCarComponent/shopCarComponent'
 import commingSoon from '../components/comingSoonComponent/commingSoonComponent'
 import hotNow from '../components/hotNowComponent/hotNowComponent'
+import find from '../components/findComponent/findComponent'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'homeComponent',
-      component: homeComponent
-    },
-    {
-      path: '/homeComponent',
       name: 'homeComponent',
       component: homeComponent
     },
@@ -38,6 +34,11 @@ export default new Router({
       path:'/shopCar',
       name:shopCar,
       component:shopCar
+    },
+    {
+      path:'/find',
+      name:"find",
+      component:find
     }
   ]
 })
