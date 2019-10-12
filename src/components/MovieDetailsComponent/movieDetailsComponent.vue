@@ -95,7 +95,7 @@
           console.log("getSubject");
           console.log(res);
           this.moveDetail = res;
-          this.title = res.title + " (" + res.data.year + ")";
+          this.title = res.title + " (" + res.year + ")";
           this.detailList.url = "https://images.weserv.nl/?url=" + res.images.medium.substring(8);
           temp = res.photos.slice(0, 5);
           tempCom = res.popular_comments;
@@ -108,22 +108,6 @@
           this.commontArr = tempCom;
           this.relativeArr = temp;
         });
-        // this.axios.get('/api/movie/subject/' + this.id)
-        //   .then(res => {
-        //     this.moveDetail = res.data;
-        //     this.title = res.data.title + " (" + res.data.year + ")";
-        //     this.detailList.url = "https://images.weserv.nl/?url=" + res.data.images.medium.substring(8);
-        //     temp = res.data.photos.slice(0, 5);
-        //     tempCom = res.data.popular_comments;
-        //     for (let i = 0; i < temp.length; i++) {
-        //       temp[i].image = "https://images.weserv.nl/?url=" + temp[i].image.substring(8);
-        //     }
-        //     for (let j = 0; j < tempCom.length; j++) {
-        //       tempCom[j].author.avatar = "https://images.weserv.nl/?url=" + res.data.popular_comments[j].author.avatar.substring(8)
-        //     }
-        //     this.commontArr = tempCom;
-        //     this.relativeArr = temp;
-        //   })
       },
       addToShopCart() {
         this.isShow = !this.isShow;

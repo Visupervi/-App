@@ -5,7 +5,7 @@ const publicFun = {
       allLoaded = false;
   this.axios.get(url)
     .then(res => {
-      totalPage = Math.ceil(res.data.total / res.data.count);
+      totalPage = Math.ceil(res.total / res.count);
       if (page > totalPage) {
         allLoaded = true;
       }
