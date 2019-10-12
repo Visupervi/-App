@@ -6,6 +6,6 @@ export const getInTheaters = () => Ajax("/api/movie/in_theaters","GET");
 //in_theatersMore
 export const getInTheatersMore = (page,count) => Ajax("/api/movie/in_theaters",{page:page,count:count},"GET");
 //subject
-export const getSubject = (id) => Ajax("/api/movie/subject/",{id:id},"GET");
+export const getSubject = (id) => Ajax("/api/movie/subject/"+id,{},"GET");
 //comingsoon
 export const getComingSoon = (page,count) => Ajax("/api/movie/coming_soon",{start:page,count:count},"GET");
