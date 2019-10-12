@@ -9,14 +9,12 @@ export default class Location {
 
       navigator.geolocation.getCurrentPosition(
         (res) => {
-          console.log("get location successful:" + res);
           let location = {};
           location.longitude = res.coords.longitude;
           location.latitude = res.coords.latitude;
           callback.success(location);
         },
         (res) => {
-          console.log("get location failed:" + res);
           callback.error(res);
         },
         options
