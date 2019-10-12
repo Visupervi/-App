@@ -32,6 +32,9 @@
 
         map.setCurrentCity("上海");
         map.enableScrollWheelZoom(true)
+        let local = new BMap.LocalSearch(map,
+          { renderOptions:{map: map, autoViewport: true}});
+        local.searchNearby("电影院","浦东新区");
       },
       getLocation(callback){
         LocationSDK.getLocation({
