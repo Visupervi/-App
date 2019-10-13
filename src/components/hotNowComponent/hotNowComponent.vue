@@ -63,18 +63,14 @@
       },
 
       //轮播图
-      getImage() {
-        getInTheaters().then((res) => {
-          for (let i = 0; i < 5; i++) {
-            this.temp[i] = res.subjects[i];
-            let _u = this.temp[i].images.medium.substring(8);
-            this.temp[i].images.medium = 'https://images.weserv.nl/?url=' + _u;
-          }
-          this.list = this.temp;
-        })
-          .catch((err) => {
-            console.log(err)
-          });
+      async getImage() {
+        let res = await getInTheaters()
+        for (let i = 0; i < 5; i++) {
+          this.temp[i] = res.subjects[i];
+          let _u = this.temp[i].images.medium.substring(8);
+          this.temp[i].images.medium = 'https://images.weserv.nl/?url=' + _u;
+        }
+        this.list = this.temp;
       },
       // 上拉加载更多
       loadBottom() {
@@ -82,40 +78,35 @@
         this.getMovieList();
       },
       // 获取加载数据
-      getMovieList() {
-        getInTheatersMore(this.page, this.count).then((res) => {
-          console.log(res)
-          this.totalPage = Math.ceil(res.total / res.count);
-          if (this.page > this.totalPage) {
-            this.allLoaded = true;
-          }
-          let moveArr = [];
-          moveArr = res.subjects;
-          for (let i = 0; i < moveArr.length; i++) {
-            let _u = moveArr[i].images.medium.substring(8);
-            let castsTemp = [];
-            let directorsTemp = [];
-            if (moveArr[i].directors) {
-              for (let j = 0; j < moveArr[i].directors.length; j++) {
-                directorsTemp[j] = moveArr[i].directors[j].name;
-              }
+      async getMovieList() {
+        let res = await getInTheatersMore(this.page, this.count)
+        this.totalPage = Math.ceil(res.total / res.count);
+        if (this.page > this.totalPage) {
+          this.allLoaded = true;
+        }
+        let moveArr = [];
+        moveArr = res.subjects;
+        for (let i = 0; i < moveArr.length; i++) {
+          let _u = moveArr[i].images.medium.substring(8);
+          let castsTemp = [];
+          let directorsTemp = [];
+          if (moveArr[i].directors) {
+            for (let j = 0; j < moveArr[i].directors.length; j++) {
+              directorsTemp[j] = moveArr[i].directors[j].name;
             }
-            if (moveArr[i].casts) {
-              for (let j = 0; j < moveArr[i].casts.length; j++) {
-                castsTemp[j] = moveArr[i].casts[j].name;
+          }
+          if (moveArr[i].casts) {
+            for (let j = 0; j < moveArr[i].casts.length; j++) {
+              castsTemp[j] = moveArr[i].casts[j].name;
 
-              }
             }
-            moveArr[i].directors = directorsTemp;
-            moveArr[i].casts = castsTemp;
-            moveArr[i].images.medium = 'https://images.weserv.nl/?url=' + _u;
           }
-          this.movieList = this.movieList.concat(moveArr);
-          this.page++
-        })
-          .catch((err) => {
-            console.log(err)
-          });
+          moveArr[i].directors = directorsTemp;
+          moveArr[i].casts = castsTemp;
+          moveArr[i].images.medium = 'https://images.weserv.nl/?url=' + _u;
+        }
+        this.movieList = this.movieList.concat(moveArr);
+        this.page++;
       },
       //路由跳转
       goToDetails(id) {
