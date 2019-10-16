@@ -88,10 +88,10 @@
       })
     },
     methods: {
-      getMovieList() {
+      async getMovieList() {
         let temp = [];
         let tempCom = [];
-        getSubject(this.id).then((res)=>{
+        let res = await getSubject(this.id)
           console.log("getSubject");
           console.log(res);
           this.moveDetail = res;
@@ -107,7 +107,6 @@
           }
           this.commontArr = tempCom;
           this.relativeArr = temp;
-        });
       },
       addToShopCart() {
         this.isShow = !this.isShow;
